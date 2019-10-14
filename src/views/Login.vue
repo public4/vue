@@ -8,6 +8,7 @@
           type="text"
           class="validate"
           v-model.trim="email"
+          @change="onChangeEml"
           :class="{invalid: (($v.email.$dirty && !$v.email.required) || ($v.email.$dirty && !$v.email.email))}"
       >
       <label for="email">Email</label>
@@ -24,6 +25,7 @@
           type="password"
           class="validate"
           v-model="password"
+          @change="onChangePwd"
           :class="{invalid: (($v.password.$dirty && !$v.password.required) || ($v.password.$dirty && !$v.password.minLength))}"
       >
       <label for="password">Пароль</label>
@@ -64,12 +66,23 @@ export default {
   }),
   methods:{
     submitHandler() {
-      console.log(this.$v.password)
-      if (this.$v.invalid) {
+      if (this.$v.$invalid) {
         this.$v.$touch()
         return
       }
-      //this.$router.push('/')
+      let formData = {
+        email: this.email,
+        password: this.password
+      }
+      console.log(formData)
+    },
+    onChangeEml() {
+      this.$v.email.$touch()
+      return
+    },
+    onChangePwd() {
+      this.$v.password.$touch()
+      return
     }
   },
   validations: {
